@@ -1,13 +1,25 @@
 import Link from 'next/link'
+import { Router } from 'next/router'
 import { useEffect } from 'react'
 // import ReactTooltip from 'react-tooltip'
-import Button from '../components/button'
+import { Button } from '../components/buttons/button'
 import FeatureCard from '../components/featureCard'
 import PricingCard from '../components/pricingCard'
+import { useRouter } from 'next/router'
+import { useAuth } from '../contexts/auth'
 
 export default function Landing() {
+  const auth = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (auth.isLoggedIn()) {
+      router.push('/dashboard')
+    }
+  }, [])
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-grow flex-col">
       <HeroSection />
       <FeatureSection />
       <PricingSection />
@@ -18,6 +30,7 @@ export default function Landing() {
 
 // author: marthel
 function HeroSection() {
+  const router = useRouter()
   return (
     <div className="flex flex-col items-center justify-center px-[20px] py-[80px] text-center">
       <h1 className="w-full md:max-w-[600px]">Your web3 events solution</h1>
@@ -26,19 +39,13 @@ function HeroSection() {
         and ticketing.
       </p>
       <div className="mt-[48px] flex flex-row items-center space-x-[36px]">
-        <a
-          href="https://forms.gle/LzvnhgUnw8TabykB8"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button
-            active={true}
-            text={'Apply for Beta'}
-            onClick={() => {
-              return
-            }}
-          />
-        </a>
+        <Button
+          active={true}
+          text={'Launch App'}
+          onClick={() => {
+            router.push('/login')
+          }}
+        />
         <a
           href="#features"
           className="font-semibold text-primary hover:underline"
